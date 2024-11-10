@@ -6,7 +6,6 @@
 
 //#define DEBUG
 
-
 using namespace std;
 enum id {
 	BUTTON_ID_PLAN = 2,
@@ -34,7 +33,6 @@ EVT_CHOICE(time_impl_choise3_ID, MainFrame::OnTimeImplChoise3Change)
 EVT_CHOICE(CHOISE_MODE_ID, MainFrame::OnChoiseModeChange)
 wxEND_EVENT_TABLE()
 
-
 int Spin1Num = 0;
 int TimeImplChoise1 = -1;
 int Spin2Num = 0;
@@ -42,27 +40,24 @@ int TimeImplChoise2 = -1;
 int Spin3Num = 0;
 int TimeImplChoise3 = -1;
 int ModeChoise = -1;
-string comment = "Запланировано с shutdown_gui";
+string comment = "Scheduled with shutdown_gui";
 
+MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) {
+	wxPanel* panel = new wxPanel(this);
 
-
-MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY,title){
-	wxPanel* panel = new wxPanel(this); /*костыль для правельного отображения*/
-
-
-	wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, "Через:", wxPoint(0, 0));
-	wxStaticText* staticText2 = new wxStaticText(panel, wxID_ANY, "Выберите действие:", wxPoint(200, 0));
+	wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, "In:", wxPoint(0, 0));
+	wxStaticText* staticText2 = new wxStaticText(panel, wxID_ANY, "Select action:", wxPoint(200, 0));
 
 	wxArrayString mode;
-	mode.Add("Завершение работы");
-	mode.Add("Гибернация");
-	mode.Add("Перезагрузка");
+	mode.Add("Shutdown");
+	mode.Add("Hibernate");
+	mode.Add("Restart");
 	wxChoice* mode_choise = new wxChoice(panel, CHOISE_MODE_ID, wxPoint(210, 20), wxSize(190, -1), mode);
 
 	wxArrayString time_impl;
-	time_impl.Add("часов");
-	time_impl.Add("минут");
-	time_impl.Add("секунд");
+	time_impl.Add("hours");
+	time_impl.Add("minutes");
+	time_impl.Add("seconds");
 	wxChoice* time_impl_choise1 = new wxChoice(panel, time_impl_choise1_ID, wxPoint(100, 20), wxSize(100, -1), time_impl);
 	wxChoice* time_impl_choise2 = new wxChoice(panel, time_impl_choise2_ID, wxPoint(100, 50), wxSize(100, -1), time_impl);
 	wxChoice* time_impl_choise3 = new wxChoice(panel, time_impl_choise3_ID, wxPoint(100, 80), wxSize(100, -1), time_impl);
@@ -71,17 +66,15 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY,title){
 	wxSpinCtrl* spin2 = new wxSpinCtrl(panel, spin_ID_2, " ", wxPoint(0, 50), wxSize(100, -1));		spin2->SetRange(0, 100000);
 	wxSpinCtrl* spin3 = new wxSpinCtrl(panel, spin_ID_3, " ", wxPoint(0, 80), wxSize(100, -1));		spin3->SetRange(0, 100000);
 
-	wxStaticText* staticText3 = new wxStaticText(panel, wxID_ANY, "Введите комментарий:", wxPoint(0, 130));
+	wxStaticText* staticText3 = new wxStaticText(panel, wxID_ANY, "Enter comment:", wxPoint(0, 130));
 
-	wxTextCtrl* comment = new wxTextCtrl(panel, COMMENT_ID, "Запланировано с shutdown_gui",wxPoint(0,150),wxSize(200,-1));
+	wxTextCtrl* comment = new wxTextCtrl(panel, COMMENT_ID, "Scheduled with shutdown_gui", wxPoint(0, 150), wxSize(200, -1));
 
-	wxButton* plan_button = new wxButton(panel, BUTTON_ID_PLAN, "Запланировать", wxPoint(300, 250), wxSize(100, 35));
-	wxButton* cancel_button = new wxButton(panel, BUTTON_ID_CANCEL, "Отмена плана", wxPoint(0, 250), wxSize(100, 35));
-
+	wxButton* plan_button = new wxButton(panel, BUTTON_ID_PLAN, "Schedule", wxPoint(300, 250), wxSize(100, 35));
+	wxButton* cancel_button = new wxButton(panel, BUTTON_ID_CANCEL, "Cancel Plan", wxPoint(0, 250), wxSize(100, 35));
 
 	CreateStatusBar();
 }
-
 
 void MainFrame::OnPlanButtonClick(wxCommandEvent& evt)
 {
@@ -143,19 +136,17 @@ void MainFrame::OnPlanButtonClick(wxCommandEvent& evt)
 #endif // DEBUG
 		system(command.c_str());
 
-
-
-		wxLogStatus("План поставлен");
+		wxLogStatus("Plan set");
 	}
 	else
 	{
-		wxLogStatus("Не удалось составить план");
+		wxLogStatus("Failed to create plan");
 	}
 }
 void MainFrame::OnCancelButtonClick(wxCommandEvent& evt)
 {
 	system("shutdown /a");
-	wxLogStatus("Выполнение отменено");
+	wxLogStatus("Execution canceled");
 }
 
 void MainFrame::OnCommentChange(wxCommandEvent& evt)
@@ -166,7 +157,6 @@ void MainFrame::OnCommentChange(wxCommandEvent& evt)
 	wxLogStatus(test);
 #endif // DEBUG
 }
-
 
 void MainFrame::OnSpin1Change(wxSpinEvent& evt)
 {
@@ -179,7 +169,6 @@ void MainFrame::OnSpin1Change(wxSpinEvent& evt)
 }
 void MainFrame::OnTimeImplChoise1Change(wxCommandEvent& evt)
 {
-
 	TimeImplChoise1 = evt.GetSelection();
 #ifdef DEBUG
 	wxString mystring;
@@ -187,7 +176,6 @@ void MainFrame::OnTimeImplChoise1Change(wxCommandEvent& evt)
 	wxLogStatus(mystring);
 #endif // DEBUG
 }
-
 
 void MainFrame::OnSpin2Change(wxSpinEvent& evt)
 {
@@ -200,14 +188,13 @@ void MainFrame::OnSpin2Change(wxSpinEvent& evt)
 }
 void MainFrame::OnTimeImplChoise2Change(wxCommandEvent& evt)
 {
-	TimeImplChoise2= evt.GetSelection();
+	TimeImplChoise2 = evt.GetSelection();
 #ifdef DEBUG
 	wxString mystring;
 	mystring << TimeImplChoise2;
 	wxLogStatus(mystring);
 #endif // DEBUG
 }
-
 
 void MainFrame::OnSpin3Change(wxSpinEvent& evt)
 {
