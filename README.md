@@ -1,3 +1,3 @@
-Программа нативная и (скорее всего) не имеет зависимостей
+The program is native and (most likely) has no dependencies
 
-Использовал c++ 20 стандарт и wxwidgets
+Using c++ 20 standard and wxwidgets
